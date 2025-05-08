@@ -1,17 +1,24 @@
-import 'package:ui/services/api_service.dart';
+import '../services/api_client.dart';
 
 class AuthRepository {
-  // Login method using ApiService
+  final ApiClient _apiClient;
+
+  AuthRepository({ApiClient? apiClient}) : _apiClient = apiClient ?? ApiClient();
+
   Future<String> login(String username, String password) async {
-    try {
-      final token = await ApiService.login(username, password);
-      return token;
-    } catch (e) {
-      rethrow; // Forward the error to be handled in the provider or UI
+    final response = await _apiClient.post('login', {
+      'username': username,
+      'password': password,
+    });
+
+    if (response.statusCode == 200) {
+      final data = _apiClient.parseResponse(response);
+      return data['token'];
+    } else {
+      throw Exception(_apiClient.parseError(response));
     }
   }
 
-  // Register method using ApiService
   Future<Map<String, dynamic>> registerUser({
     required String username,
     required String email,
@@ -22,20 +29,26 @@ class AuthRepository {
     required String achievements,
     String? profilePictureUrl,
   }) async {
-    try {
-      final response = await ApiService.registerUser(
-        username: username,
-        email: email,
-        password: password,
-        education: education,
-        jobDetails: jobDetails,
-        skills: skills,
-        achievements: achievements,
-        profilePictureUrl: profilePictureUrl,
-      );
-      return response;
-    } catch (e) {
-      rethrow;
+    final response = await _apiClient.post('users', {
+      'user': {
+        'username': username,
+        'email': email,
+        'password': password,
+        'profile': {
+          'education': education,
+          'job_details': jobDetails,
+          'skills': skills,
+          'achievements': achievements,
+          if (profilePictureUrl != null)
+            'profile_picture': profilePictureUrl,
+        },
+      },
+    });
+
+    if (response.statusCode == 201) {
+      return _apiClient.parseResponse(response);
+    } else {
+      throw Exception(_apiClient.parseError(response));
     }
   }
 }

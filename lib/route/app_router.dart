@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../auth/auth_page.dart';
+import '../view/auth_page.dart';
 import '../view/home_page.dart';
 import '../view/splash_screen.dart';
 import '../view/admin/dashboard_page.dart';

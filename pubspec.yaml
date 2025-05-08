@@ -1,4 +1,4 @@
-name: ui
+name: lms
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -33,7 +33,6 @@ dependencies:
   http: ^1.1.0        # API calls
   shared_preferences: ^2.2.2  # Store JWT locally
   provider: ^6.0.5    # State management (optional)
-  google_sign_in: ^6.2.1  # Google Sign-In
   go_router: ^13.2.0  # Navigation and routing
 
   # The following adds the Cupertino Icons font to your application.
@@ -63,8 +62,10 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-    - assets/images/
+  # assets:
+  #   - assets/images/
+  #   - assets/icons/
+  #   - assets/fonts/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
