@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ui/repository/auth_repository.dart';
+import 'package:lms/repository/auth_repository.dart';
+
 
 class AuthProvider with ChangeNotifier {
   final AuthRepository _authRepository = AuthRepository();
