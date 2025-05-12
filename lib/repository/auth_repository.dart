@@ -1,4 +1,4 @@
-import '../services/api_client.dart';
+import '../repository/api_client.dart';
 
 class AuthRepository {
   final ApiClient _apiClient;
