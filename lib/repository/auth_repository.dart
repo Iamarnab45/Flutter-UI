@@ -1,15 +1,18 @@
-import '../repository/api_client.dart';
+import 'dart:convert';
+import 'api_client.dart';
 
 class AuthRepository {
   final ApiClient _apiClient;
 
-  AuthRepository({ApiClient? apiClient}) : _apiClient = apiClient ?? ApiClient();
+  AuthRepository({required ApiClient apiClient})
+    : _apiClient = apiClient;
 
   Future<String> login(String username, String password) async {
-    final response = await _apiClient.post('login', {
-      'username': username,
-      'password': password,
-    });
+    final response = await _apiClient.post(
+      'login',
+      body: {'username': username, 'password': password},
+      headers: {'Content-Type': 'application/json'},
+    );
 
     if (response.statusCode == 200) {
       final data = _apiClient.parseResponse(response);
@@ -29,21 +32,24 @@ class AuthRepository {
     required String achievements,
     String? profilePictureUrl,
   }) async {
-    final response = await _apiClient.post('users', {
-      'user': {
-        'username': username,
-        'email': email,
-        'password': password,
-        'profile': {
-          'education': education,
-          'job_details': jobDetails,
-          'skills': skills,
-          'achievements': achievements,
-          if (profilePictureUrl != null)
-            'profile_picture': profilePictureUrl,
+    final response = await _apiClient.post(
+      'users',
+      body: {
+        'user': {
+          'username': username,
+          'email': email,
+          'password': password,
+          'profile': {
+            'education': education,
+            'job_details': jobDetails,
+            'skills': skills,
+            'achievements': achievements,
+            if (profilePictureUrl != null) 'profile_picture': profilePictureUrl,
+          },
         },
       },
-    });
+      headers: {'Content-Type': 'application/json'},
+    );
 
     if (response.statusCode == 201) {
       return _apiClient.parseResponse(response);

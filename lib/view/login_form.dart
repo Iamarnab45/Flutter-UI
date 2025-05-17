@@ -30,12 +30,12 @@ class _LoginFormState extends State<LoginForm> {
     if (!mounted) return;
 
     if (authProvider.error != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(authProvider.error!)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(authProvider.error!)));
     } else {
       final prefs = await SharedPreferences.getInstance();
-      final token = await prefs.getString('auth_token');
+      final token = prefs.getString('auth_token');
       if (mounted) {
         if (_usernameController.text.trim().toLowerCase() == 'admin') {
           context.go('/admin/dashboard');
@@ -89,9 +89,10 @@ class _LoginFormState extends State<LoginForm> {
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
-                child: isLoading
-                    ? const CircularProgressIndicator()
-                    : const Text('Login'),
+                child:
+                    isLoading
+                        ? const CircularProgressIndicator()
+                        : const Text('Login'),
               ),
             ),
             const SizedBox(height: 16),
@@ -123,4 +124,4 @@ class _LoginFormState extends State<LoginForm> {
     _passwordController.dispose();
     super.dispose();
   }
-} 
+}

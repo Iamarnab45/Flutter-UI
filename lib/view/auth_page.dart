@@ -42,7 +42,28 @@ class _AuthPageState extends State<AuthPage> {
                     child:
                         _isLogin
                             ? LoginForm(onSwitchToSignUp: _switchTab)
-                            : RegisterForm(onSwitchTab: _switchTab),
+                            : Column(
+                              children: [
+                                RegisterForm(onSwitchTab: _switchTab),
+                                const SizedBox(height: 16),
+                                TextButton(
+                                  onPressed: _switchTab,
+                                  child: const Text.rich(
+                                    TextSpan(
+                                      text: 'Already have an account? ',
+                                      children: [
+                                        TextSpan(
+                                          text: 'Login',
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                   ),
                 ),
               ],
@@ -77,4 +98,4 @@ class _AuthPageState extends State<AuthPage> {
       ),
     );
   }
-} 
+}

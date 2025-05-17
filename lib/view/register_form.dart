@@ -40,12 +40,12 @@ class _RegisterFormState extends State<RegisterForm> {
     if (!mounted) return;
 
     if (authProvider.error != null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(authProvider.error!)),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(authProvider.error!)));
     } else {
       final prefs = await SharedPreferences.getInstance();
-      final token = await prefs.getString('auth_token');
+      final token = prefs.getString('auth_token');
       if (mounted) {
         context.go('/home');
       }
@@ -93,7 +93,8 @@ class _RegisterFormState extends State<RegisterForm> {
             ),
             validator: (value) {
               if (value?.isEmpty ?? true) return 'Required';
-              if (value!.length < 6) return 'Password must be at least 6 characters';
+              if (value!.length < 6)
+                return 'Password must be at least 6 characters';
               return null;
             },
           ),
@@ -105,7 +106,11 @@ class _RegisterFormState extends State<RegisterForm> {
               labelText: 'Confirm Password',
               border: OutlineInputBorder(),
             ),
-            validator: (value) => value != _passwordController.text ? 'Passwords do not match' : null,
+            validator:
+                (value) =>
+                    value != _passwordController.text
+                        ? 'Passwords do not match'
+                        : null,
           ),
           const SizedBox(height: 16),
           TextFormField(
@@ -151,9 +156,10 @@ class _RegisterFormState extends State<RegisterForm> {
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
               ),
-              child: isLoading
-                  ? const CircularProgressIndicator()
-                  : const Text('Sign Up'),
+              child:
+                  isLoading
+                      ? const CircularProgressIndicator()
+                      : const Text('Sign Up'),
             ),
           ),
           const SizedBox(height: 16),
@@ -179,13 +185,8 @@ class _RegisterFormState extends State<RegisterForm> {
   @override
   void dispose() {
     _usernameController.dispose();
-    _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
-    _educationController.dispose();
-    _jobDetailsController.dispose();
-    _skillsController.dispose();
-    _achievementsController.dispose();
     super.dispose();
   }
-} 
+}

@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:lms/repository/auth_repository.dart';
-
+import '../repository/auth_repository.dart';
+import '../repository/api_client.dart';
 
 class AuthProvider with ChangeNotifier {
-  final AuthRepository _authRepository = AuthRepository();
-
+  late final AuthRepository _authRepository;
   String? _token;
   bool _isLoading = false;
   String? _error;
+
+  AuthProvider({required ApiClient apiClient}) {
+    _authRepository = AuthRepository(apiClient: apiClient);
+  }
 
   String? get token => _token;
   bool get isLoading => _isLoading;
@@ -38,14 +41,13 @@ class AuthProvider with ChangeNotifier {
     required String jobDetails,
     required String skills,
     required String achievements,
-    String? profilePictureUrl,
   }) async {
     _isLoading = true;
     _error = null;
     notifyListeners();
 
     try {
-      final result = await _authRepository.registerUser(
+      await _authRepository.registerUser(
         username: username,
         email: email,
         password: password,
@@ -53,11 +55,10 @@ class AuthProvider with ChangeNotifier {
         jobDetails: jobDetails,
         skills: skills,
         achievements: achievements,
-        profilePictureUrl: profilePictureUrl,
       );
-      print("Registration Success: $result");
     } catch (e) {
       _error = e.toString();
+      rethrow;
     } finally {
       _isLoading = false;
       notifyListeners();
